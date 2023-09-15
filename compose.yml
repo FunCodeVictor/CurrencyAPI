@@ -1,8 +1,8 @@
 version: '3.8'
 services:
   server:
-    build: ./server
-    container_name: server
+    build: ./app
+    container_name: app
     platform: linux/amd64
     restart: always
     ports:
