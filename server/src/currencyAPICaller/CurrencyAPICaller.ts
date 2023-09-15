@@ -6,22 +6,47 @@ type CurrencyAPICaller = {
     url: string,
     apiKey: string,
     getCurrencies(): Promise<Currency[]>;
+    convertCurrency(amount: string, fromCode: string, toCode: string): Promise<string>;
 };
 
 export function getCurrencyAPICaller(): CurrencyAPICaller {
     const currencyAPICaller: CurrencyAPICaller = {
         url: "https://api.currencyapi.com/v3/",
         apiKey: "cur_live_wldJPhNjQ1I2q3dMN1BBBSj7o9oAFp0LMyYzIhIv",
-        
-        getCurrencies: async function (): Promise<Currency[]> {
-            return await getAPICurrencies(this.url, this.apiKey);
+        getCurrencies: async function(): Promise<Currency[]> {
+            return await getAPICurrencies(this.url, this.apiKey, "USD");
         },
+        convertCurrency: async function (amount: string, fromCode: string, toCode: string): Promise<string> {
+            const currencies = await getAPICurrencies(this.url, this.apiKey, fromCode);
+            return convertAmountWithToCodeRate(amount, toCode, currencies);
+        }
     };
     return currencyAPICaller;
 };
 
-async function getAPICurrencies(url: string, apiKey: string): Promise<Currency[]> {
-    const latestCurrencies = await fetch(url + "latest", {
+function convertAmountWithToCodeRate(amount: string, toCode: string, currencies: Currency[]): string {
+    let relevantCurrency = null;
+    for (const tempCurrency of currencies) {
+        if (tempCurrency.code == toCode) {
+            relevantCurrency = tempCurrency;
+            break;
+        }
+    }
+
+    if (relevantCurrency == null) {
+        console.log("Error, wished conversion code is not found");
+        return "0";
+    }
+
+    return (+amount * relevantCurrency.value).toFixed(2);
+}
+
+async function getAPICurrencies(url: string, apiKey: string, baseCurrency: string): Promise<Currency[]> {
+    const fetchUrl = url + "latest" +
+        "?apikey=" + apiKey +
+        "&base_currency=" + baseCurrency;
+    
+    const latestCurrencies = await fetch(fetchUrl, {
         mode: 'cors',
         headers: {
             'apikey': apiKey
@@ -29,14 +54,10 @@ async function getAPICurrencies(url: string, apiKey: string): Promise<Currency[]
     })
         .then(response => response.json())
         .catch(error => console.log('Error while fetching:', error));
-    
-    
+
     const currencyAPIMapper = getCurrencyAPIMapper();
 
     const currencyObjects = currencyAPIMapper.latestCurrenciesToCurrency(latestCurrencies.data);
-    //console.log(currencyObjects);
 
-    return currencyObjects;
-    
-    //[{ code: "USD", value: 1.00 }, { code: "DKK", value: 7.21 }];
+    return currencyObjects
 }
