@@ -17,7 +17,7 @@ export function getCurrencyAPICaller(): CurrencyAPICaller {
             return await getAPICurrencies(this.url, this.apiKey, "USD");
         },
         convertCurrency: async function (amount: string, fromCode: string, toCode: string): Promise<string> {
-            const currencies = await getAPICurrencies(this.url, this.apiKey, fromCode);
+            const currencies = await getAPICurrencies(this.url, this.apiKey, fromCode, toCode);
             return convertAmountWithToCodeRate(amount, toCode, currencies);
         }
     };
@@ -41,11 +41,18 @@ function convertAmountWithToCodeRate(amount: string, toCode: string, currencies:
     return (+amount * relevantCurrency.value).toFixed(2);
 }
 
-async function getAPICurrencies(url: string, apiKey: string, baseCurrency: string): Promise<Currency[]> {
+async function getAPICurrencies(url: string, apiKey: string, baseCurrency: string, currency?: string): Promise<Currency[]> {
+    let currencyParameter = "";
+    if (currency) {
+        currencyParameter = "&currencies=" + currency;
+    }
+    
     const fetchUrl = url + "latest" +
         "?apikey=" + apiKey +
-        "&base_currency=" + baseCurrency;
-    
+        "&base_currency=" + baseCurrency +
+        currencyParameter;
+
+    console.log(fetchUrl);
     const latestCurrencies = await fetch(fetchUrl, {
         mode: 'cors',
         headers: {
