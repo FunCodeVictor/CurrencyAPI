@@ -16,5 +16,13 @@ http://localhost:3000/convertCurrency?amount=10&fromCode=USD&toCode=EUR
 Here you can change the amount to the wished amount, fromCode to from currency code and toCode to the desired currency.
 
 ## Dev notes:
-Container can be rebuilt with `docker compose build server`
+### Setting up local development environment
+1. Make sure you have "npm" installed
+2. Navigate to /app/ folder and run `npm install`
+3. Run `npm run dev` which builds and package the code to the `dist` folder
+
+
+### Docker commands
+Container can be rebuilt with `docker compose build app`
+
 
