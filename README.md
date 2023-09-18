@@ -40,3 +40,5 @@ Here you can change the amount to the wished amount, fromCode to from currency c
 Container can be rebuilt with `docker compose build app`
 
 
+### CI setup
+GitHub Actions quick start: https://docs.github.com/en/actions/quickstart
