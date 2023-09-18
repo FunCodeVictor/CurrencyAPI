@@ -52,7 +52,6 @@ async function getAPICurrencies(url: string, apiKey: string, baseCurrency: strin
         "&base_currency=" + baseCurrency +
         currencyParameter;
 
-    console.log(fetchUrl);
     const latestCurrencies = await fetch(fetchUrl, {
         mode: 'cors',
         headers: {

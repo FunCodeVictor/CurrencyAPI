@@ -7,6 +7,10 @@ To run the container service:
 3. Solution should now run on http://localhost:3000/
 
 ## URLs to use:
+### Front page:
+http://localhost:3000
+Very basic html, briefly describing the API's below.
+
 ### List currencies:
 http://localhost:3000/listCurrencies
 The currencies base rate is USD to the shown currency.

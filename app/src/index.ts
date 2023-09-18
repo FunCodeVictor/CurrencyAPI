@@ -6,15 +6,26 @@ const currencyAPICaller = getCurrencyAPICaller();
 const validator = getValidator();
 
 
+app.get('/', async (req, res) => {
+    
+    res.send(
+        ' <h1> Welcome to the currency API! </h1> \
+          <h2> The following API\'s can be freely used </> \
+          <h3> \'\/listCurrencies\' is a GET request, which returns the current currency codes with their conversion value, based off the USD. The return format is text. </> \
+          <h3> \'\/convertCurrency\' is a GET request which takes three parameters, \'amount\', \'fromCode\' and \'toCode\'. It returns the converted amount. The return format is text. </> \
+        '
+        );
+});
+
 
 app.get('/listCurrencies', async (req, res) => {
     const currencies = await currencyAPICaller.getCurrencies();
-    
+
     var readableCurrencies = currencies.map(cur => {
-        return cur.code + "=" + cur.value;
+        return '<p>' + cur.code + "=" + cur.value + '</>';
     });
 
-    res.send(readableCurrencies.join("\n"));
+    res.send(readableCurrencies.join('')); 
 });
 
 
@@ -31,7 +42,7 @@ app.get('/convertCurrency', async (req, res) => {
 
     const resultAmount = await currencyAPICaller.convertCurrency(<string> amount, <string> fromCode, <string> toCode);
     
-    res.send(amount + " " + fromCode + " is converted to:" + '\n' + resultAmount + " " + toCode);
+    res.send('<p>' + amount + " " + fromCode + " is converted to:" + '\n' + resultAmount + " " + toCode + '</>');
 });
 
 const port = process.env.PORT || 3000;
