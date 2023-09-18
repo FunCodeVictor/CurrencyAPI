@@ -42,7 +42,7 @@ app.get('/convertCurrency', async (req, res) => {
 
     const resultAmount = await currencyAPICaller.convertCurrency(<string> amount, <string> fromCode, <string> toCode);
     
-    res.send('<p>' + amount + " " + fromCode + " is converted to:" + '\n' + resultAmount + " " + toCode + '</>');
+    res.send('<p>' + amount + " " + fromCode + " is converted to:" + '\n' + resultAmount + " " + toCode + '\n' + '</>');
 });
 
 const port = process.env.PORT || 3000;
