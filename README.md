@@ -6,7 +6,7 @@ To run the container service:
 2. In root folder, run `docker compose up`
 3. Solution should now run on http://localhost:3000/
 
-## URLs to use in browser (preferred because results are wrapped in HTML):
+## URLs to use in browser:
 ### Front page:
 http://localhost:3000
 Very basic html, briefly describing the API's below.
@@ -19,7 +19,7 @@ The currencies base rate is USD to the shown currency.
 http://localhost:3000/convertCurrency?amount=10&fromCode=USD&toCode=EUR
 Here you can change the amount to the wished amount, fromCode to from currency code and toCode to the desired currency.
 
-## cURL commands (not perfect, as HTML is returned, but usable):
+## cURL commands:
 ### Front page:
 `curl http://localhost:3000`
 
